@@ -1,0 +1,40 @@
+sensor:
+  - platform: mqtt
+    name: "Doorbell"
+    state_topic: "doorbell"
+    expire_after: 10
+	
+switch:
+  - platform: mqtt
+    name: "Doorbell Chime"
+    state_topic: "state/doorbell"
+    command_topic: "doorbell/commands"
+    payload_on: "Audio Doorbell"
+    payload_off: "Silent Doorbell"
+    retain: true
+	
+binary_sensor:
+  - platform: mqtt
+    name: "Front Door"
+    state_topic: "doors/Front"
+    payload_on: "Open"
+    payload_off: "Closed"
+	
+automation old:
+  - alias: Doorbell Notify
+    trigger:
+      platform: mqtt
+      topic: doorbell
+      payload: 'Ding'
+    action:
+      service: notify.ios_robs_iphone
+      data:
+        message: "Doorbell!"
+        data:
+          push:
+            badge: 5
+          attachment:
+            url: 'https://YOURHASSIOADDRESS:8123/api/camera_proxy/camera.front_door?api_password=YOURPASSWORD' 
+            #might need to substitute http for https depending on if you use SSL
+            content-type: jpeg
+            hide-thumbnail: false

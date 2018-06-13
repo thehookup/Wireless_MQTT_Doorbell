@@ -1,0 +1,39 @@
+esphomeyaml:
+  name: doorbell
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: 'YOURWIFI_SSID'
+  password: 'YOURWIFI_PASSWORD'
+
+mqtt:
+  broker: 'YOURMQTTBROKERIP'
+  username: 'YOURMQTTBROKER_USERNAME'
+  password: 'YOURMQTTBROKER_PASSWORD'
+
+logger:
+
+ota:
+  password: 'OTAPW'
+
+binary_sensor:
+  - platform: gpio
+    name: "Doorbell"
+    pin:
+      number: D0
+      inverted: False
+      mode: INPUT_PULLDOWN_16
+  - platform: gpio
+    name: "Front Door"
+    device_class: door
+    pin:
+      number: D3
+      inverted: False
+      mode: INPUT_PULLUP
+
+switch:
+  - platform: gpio
+    name: "Doorbell Chime"
+    pin: D4
+   

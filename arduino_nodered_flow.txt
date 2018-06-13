@@ -1,0 +1,109 @@
+[
+    {
+        "id": "bf3e8af.7d79378",
+        "type": "change",
+        "z": "ca4a055d.3ca258",
+        "name": "Doorbell",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Ding! Someone rang the doorbell.",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 200,
+        "wires": [
+            [
+                "1edbc80d.736448"
+            ]
+        ]
+    },
+    {
+        "id": "1edbc80d.736448",
+        "type": "change",
+        "z": "ca4a055d.3ca258",
+        "name": "image",
+        "rules": [
+            {
+                "t": "set",
+                "p": "image",
+                "pt": "msg",
+                "to": "https://YOURHASSIOADDRESS:8123/api/camera_proxy/camera.front_door?api_password=YOURPASSWORD",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 670,
+        "y": 200,
+        "wires": [
+            [
+                "ae4cb3ec.104be"
+            ]
+        ]
+    },
+    {
+        "id": "bd831d65.eaa1e",
+        "type": "api-call-service",
+        "z": "ca4a055d.3ca258",
+        "name": "Notify Rob",
+        "server": "1e776005.3ee9b",
+        "service_domain": "notify",
+        "service": "ios_robs_iphone",
+        "data": "{}",
+        "x": 1010,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "ae4cb3ec.104be",
+        "type": "function",
+        "z": "ca4a055d.3ca258",
+        "name": "Data",
+        "func": "msg.payload = \n{\n  \"data\": \n  {\n    \"message\": msg.message,\n    \"data\": \n    {\n      \"push\": \n      {\n        \"badge\": 5,\n      },\n      \"attachment\": \n      {\n        \"url\": msg.image,\n        \"content-type\": \"jpeg\",\n        \"hide-thumbnail\": false\n      }\n    }\n  }\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 830,
+        "y": 200,
+        "wires": [
+            [
+                "bd831d65.eaa1e"
+            ]
+        ]
+    },
+    {
+        "id": "d4d327fa.d4c9e8",
+        "type": "server-state-changed",
+        "z": "ca4a055d.3ca258",
+        "name": "Doorbell",
+        "server": "1e776005.3ee9b",
+        "entityidfilter": "sensor.doorbell",
+        "haltifstate": "",
+        "x": 340,
+        "y": 200,
+        "wires": [
+            [
+                "bf3e8af.7d79378"
+            ]
+        ]
+    },
+    {
+        "id": "1e776005.3ee9b",
+        "type": "server",
+        "z": "",
+        "name": "Home Assistant",
+        "url": "http://hassio/homeassistant",
+        "pass": "NOTMYPASSWORD"
+    }
+]
