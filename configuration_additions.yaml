@@ -2,23 +2,32 @@ sensor:
   - platform: mqtt
     name: "Doorbell"
     state_topic: "doorbell"
+    availability_topic: "LWT/DoorbellMCU"
     expire_after: 10
+    payload_available: "Online"
+    payload_not_available: "Offline"
 	
 switch:
   - platform: mqtt
     name: "Doorbell Chime"
     state_topic: "state/doorbell"
     command_topic: "doorbell/commands"
+    availability_topic: "LWT/DoorbellMCU"
     payload_on: "Audio Doorbell"
     payload_off: "Silent Doorbell"
     retain: true
+    payload_available: "Online"
+    payload_not_available: "Offline"
 	
 binary_sensor:
   - platform: mqtt
     name: "Front Door"
     state_topic: "doors/Front"
+    availability_topic: "LWT/DoorbellMCU"
     payload_on: "Open"
     payload_off: "Closed"
+    payload_available: "Online"
+    payload_not_available: "Offline"
 	
 automation old:
   - alias: Doorbell Notify
