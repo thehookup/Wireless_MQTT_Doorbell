@@ -8,7 +8,7 @@
 
 //USER CONFIGURED SECTION START//
 const char* ssid = "YOUR_WIRELESS_SSID";
-const char* password = "YOUR_WIRELESS_SSID";
+const char* password = "YOUR_WIRELESS_PASSWORD";
 const char* mqtt_server = "YOUR_MQTT_SERVER_ADDRESS";
 const int mqtt_port = YOUR_MQTT_SERVER_PORT;
 const char *mqtt_user = "YOUR_MQTT_USERNAME";
@@ -58,8 +58,9 @@ void reconnect()
     {
         Serial.print("Attempting MQTT connection...");
       // Attempt to connect
-      if (client.connect(mqtt_client_name, mqtt_user, mqtt_pass)) 
+      if (client.connect(mqtt_client_name, mqtt_user, mqtt_pass, "LWT/DoorbellMCU", 1,1,"Offline")) 
       {
+        client.publish("LWT/DoorbellMCU","Online", true);
         Serial.println("connected");
         // Once connected, publish an announcement...
         if(boot == true)
@@ -154,6 +155,7 @@ void checkIn()
 //Run once setup
 void setup() {
   Serial.begin(115200);
+  while(!Serial) {} // Wait
 
   // GPIO Pin Setup
   pinMode(frontPin, INPUT_PULLUP);
