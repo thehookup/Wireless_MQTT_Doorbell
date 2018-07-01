@@ -120,7 +120,7 @@ void getDoorBell()
 {
   if(digitalRead(doorBellPin) == 1 && alreadyTriggered == false)
   {
-    client.publish("Door_Status", "Doorbell");
+    client.publish("doorbell", "Ding");
     alreadyTriggered = true;
     timer.setTimeout(6000, resetTrigger); 
   }
