@@ -160,6 +160,7 @@ void setup() {
   pinMode(doorBellPin, INPUT_PULLDOWN_16);
   pinMode(silencePin, OUTPUT);
   
+  WiFi.mode(WIFI_STA);
   setup_wifi();
   
   client.setServer(mqtt_server, mqtt_port);
